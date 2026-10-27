@@ -1,0 +1,44 @@
+[
+  {
+    "id": "swatch-ember",
+    "src": "../fixtures/swatch-ember.svg",
+    "alt": "Ember swatch",
+    "kind": "image",
+    "order": 10
+  },
+  {
+    "id": "swatch-lagoon",
+    "src": "../fixtures/swatch-lagoon.svg",
+    "alt": "Lagoon swatch",
+    "kind": "image",
+    "order": 20
+  },
+  {
+    "id": "swatch-meadow",
+    "src": "../fixtures/swatch-meadow.svg",
+    "alt": "Meadow swatch",
+    "kind": "image",
+    "order": 30
+  },
+  {
+    "id": "swatch-dune",
+    "src": "../fixtures/swatch-dune.svg",
+    "alt": "Dune swatch",
+    "kind": "image",
+    "order": 40
+  },
+  {
+    "id": "swatch-dusk",
+    "src": "../fixtures/swatch-dusk.svg",
+    "alt": "Dusk swatch",
+    "kind": "image",
+    "order": 50
+  },
+  {
+    "id": "swatch-slate",
+    "src": "../fixtures/swatch-slate.svg",
+    "alt": "Slate swatch",
+    "kind": "image",
+    "order": 60
+  }
+]
