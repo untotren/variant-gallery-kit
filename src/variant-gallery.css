@@ -1,0 +1,139 @@
+/* variant-gallery.css — layout for variantGallery().
+   Narrow containers: thumbnail strip below the hero.
+   Wide containers (>= 40rem): thumbnail strip beside the hero. */
+
+.vg {
+  --vg-gap: 0.75rem;
+  --vg-thumb-size: 4.5rem;
+  --vg-radius: 0.5rem;
+  --vg-focus: #1a5fd0;
+  --vg-selected: #222;
+  --vg-duration: 180ms;
+  container-type: inline-size;
+}
+
+.vg-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'hero'
+    'thumbs';
+  gap: var(--vg-gap);
+}
+
+.vg-hero {
+  grid-area: hero;
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--vg-radius);
+  overflow: hidden;
+  background: #eee;
+}
+
+.vg-hero-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: vg-fade-in var(--vg-duration) ease-out;
+}
+
+.vg-thumbs {
+  grid-area: thumbs;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior: contain;
+}
+
+.vg-thumb {
+  position: relative;
+  flex: 0 0 var(--vg-thumb-size);
+  width: var(--vg-thumb-size);
+  height: var(--vg-thumb-size);
+  border: 2px solid transparent;
+  border-radius: var(--vg-radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color var(--vg-duration) ease, transform var(--vg-duration) ease;
+}
+
+.vg-thumb:hover {
+  transform: translateY(-1px);
+}
+
+.vg-thumb[aria-selected='true'] {
+  border-color: var(--vg-selected);
+}
+
+.vg-thumb:focus-visible {
+  outline: 3px solid var(--vg-focus);
+  outline-offset: 2px;
+}
+
+.vg-thumb-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.vg-thumb[data-kind='video']::after {
+  content: '\25B6';
+  position: absolute;
+  inset: auto 0.25rem 0.25rem auto;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+}
+
+@container (min-width: 40rem) {
+  .vg-layout {
+    grid-template-columns: calc(var(--vg-thumb-size) + 0.5rem) minmax(0, 1fr);
+    grid-template-areas: 'thumbs hero';
+    column-gap: calc(var(--vg-gap) + 0.5rem);
+  }
+
+  .vg-thumbs {
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: auto;
+    /* Fill the hero's row height without stretching it. */
+    height: 0;
+    min-height: 100%;
+  }
+}
+
+/* Reduced motion: explicit flag set by the module, plus the OS preference. */
+.vg[data-reduced-motion='true'] *,
+.vg[data-reduced-motion='true'] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+.vg[data-reduced-motion='true'] .vg-thumb:hover {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vg *,
+  .vg *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@keyframes vg-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

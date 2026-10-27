@@ -1,1 +1,23 @@
-{"name":"variant-gallery-kit","version":"0.1.0","type":"module","private":false}
+{
+  "name": "variant-gallery-kit",
+  "version": "0.1.0",
+  "description": "Dependency-free variant media gallery with explicit selection state.",
+  "type": "module",
+  "private": false,
+  "main": "./src/variantGallery.js",
+  "exports": {
+    ".": "./src/variantGallery.js",
+    "./state": "./src/state.js",
+    "./style.css": "./src/variant-gallery.css"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "fixtures": "node scripts/generate-fixtures.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

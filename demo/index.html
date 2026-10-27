@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Variant gallery demo</title>
+    <link rel="stylesheet" href="../src/variant-gallery.css" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0 auto;
+        padding: 1rem;
+        max-width: 60rem;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+      #log {
+        font-family: ui-monospace, monospace;
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Variant gallery demo</h1>
+    <p>
+      Fictional swatches. The hero starts at <code>defaultHeroId</code> and only changes on an explicit
+      variant selection or thumbnail activation (Enter, Space, click). Arrow keys, Home and End move focus
+      between thumbnails. Serve this folder over HTTP (e.g. <code>npx serve .</code>) and open
+      <code>/demo/</code>.
+    </p>
+    <div class="controls" role="group" aria-label="Variants">
+      <button type="button" data-variant="warm">Warm</button>
+      <button type="button" data-variant="cool">Cool</button>
+      <button type="button" data-variant="empty">Empty (no media)</button>
+      <label><input type="checkbox" id="rm" /> Reduced motion</label>
+    </div>
+    <div id="gallery"></div>
+    <p id="log" aria-live="polite"></p>
+
+    <script type="module">
+      import { variantGallery } from '../src/variantGallery.js';
+
+      // Inline copy of fixtures/media.json so the demo makes no fetch calls.
+      const media = [
+        { id: 'swatch-ember', src: '../fixtures/swatch-ember.svg', alt: 'Ember swatch', kind: 'image', order: 10 },
+        { id: 'swatch-lagoon', src: '../fixtures/swatch-lagoon.svg', alt: 'Lagoon swatch', kind: 'image', order: 20 },
+        { id: 'swatch-meadow', src: '../fixtures/swatch-meadow.svg', alt: 'Meadow swatch', kind: 'image', order: 30 },
+        { id: 'swatch-dune', src: '../fixtures/swatch-dune.svg', alt: 'Dune swatch', kind: 'image', order: 40 },
+        { id: 'swatch-dusk', src: '../fixtures/swatch-dusk.svg', alt: 'Dusk swatch', kind: 'image', order: 50 },
+        { id: 'swatch-slate', src: '../fixtures/swatch-slate.svg', alt: 'Slate swatch', kind: 'image', order: 60 },
+      ];
+
+      const log = document.getElementById('log');
+      const gallery = variantGallery(document.getElementById('gallery'), {
+        media,
+        variantMedia: {
+          warm: ['swatch-dune', 'swatch-ember'],
+          cool: ['swatch-dusk', 'swatch-lagoon'],
+          empty: [],
+        },
+        defaultHeroId: 'swatch-meadow',
+        label: 'Swatch thumbnails',
+        onChange: (s) => {
+          log.textContent = `hero=${s.heroId} variant=${s.selectedVariant ?? '(none)'}`;
+        },
+      });
+
+      document.querySelectorAll('[data-variant]').forEach((button) => {
+        button.addEventListener('click', () => {
+          gallery.selectedVariant = button.dataset.variant;
+          log.textContent = `hero=${gallery.heroId} variant=${gallery.selectedVariant}`;
+        });
+      });
+
+      const rm = document.getElementById('rm');
+      rm.checked = gallery.reducedMotion;
+      rm.addEventListener('change', () => gallery.setReducedMotion(rm.checked));
+      log.textContent = `hero=${gallery.heroId} variant=(none)`;
+    </script>
+  </body>
+</html>
